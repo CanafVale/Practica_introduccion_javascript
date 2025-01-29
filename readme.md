@@ -1,1 +1,4 @@
 PRÁCTICA DE INTRODUCCIÓN A JAVASCRIPT
+
+- Ejercicio 1
+- Ejercicio 2
