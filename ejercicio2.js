@@ -1,4 +1,4 @@
-console.log('Ejercicio 2')
+
 
 /*
 Ejercicio 2 Arreglar bug
@@ -6,7 +6,7 @@ Ejercicio 2 Arreglar bug
 Nuestro cliente está intentando calcular el promedio de una lista de números pero nos dice que no funciona. No nos da el error, solo este código que es el que tiene en producción.
 Para este ejercicio tenemos que crear un archivo llamado bug.js con la solución.
 
-const calcularPromedio = (numeros) => {
+const calcularPromedio = (numconsole.log('Ejercicio 2')eros) => {
     let sumaTotal = 0;
 
     for (let i = 0; i <= numeros.length; i++) {
