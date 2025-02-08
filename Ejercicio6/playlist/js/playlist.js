@@ -1,3 +1,4 @@
+console.log("Ejercicio 6: Playlist"); //Ok, conectado.
 /**
  * @typedef {Object} Song
  * @property {string} title - The title of the song.
@@ -27,8 +28,15 @@ const musicCatalog = () => {
      * Adds a new playlist to the catalog.
      * @param {string} playlistName - The name of the new playlist.
      */
-    const createPlaylist = (playlistName) => {};
+    //Creamos la función con el spread operator como en el ejemplo de cart y para evitar los problemas de mutabilidad que nos daría si lo hicieramos con .push.
+    //Añadimos una condición para que si no se introduce un nombre de playlist nos devuelva un error, como especie de control de errores:
+    const createPlaylist = (playlistName) => {
+      if (!playlistName) throw new Error("Playlist name is required");
+      playlists = [...playlists, { name: playlistName, songs: [] }];
+  };
   
+  
+
     /**
      * Gets all playlists in the catalog.
      * @returns {Playlist[]} The list of all playlists.
