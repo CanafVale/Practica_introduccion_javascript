@@ -49,8 +49,14 @@ const musicCatalog = () => {
      * Removes a playlist from the catalog.
      * @param {string} playlistName - The name of the playlist to remove.
      */
-      const removePlaylist = (playlistName) => {};
-  
+
+    //Filter va a crear un nuevo array con todas las playlists excepto la que tiene el playlistName indicado.
+    //Además, no modificams los datos iniciales, sino que creamos un nuevo array con los datos que queremos, por lo que no hay problemas de mutabilidad.
+    const removePlaylist = (playlistName) => {
+      playlists = playlists.filter(playlist => playlist.name !== playlistName);
+  };
+
+
     /**
      * Adds a song to a specific playlist.
      * @param {string} playlistName - The name of the playlist to add the song to.
@@ -87,10 +93,19 @@ const musicCatalog = () => {
   };
 
   //Pruebas manuales:
+ // Función createPlaylist:
   const catalog = musicCatalog();
   console.log(catalog.getAllPlaylists()); // Devolverá la lista de playlists vacía
   catalog.createPlaylist("Jazz");
   console.log(catalog.getAllPlaylists()); // Devolverá la lista de playlists con la playlist "Jazz"
+
+  // Función removePlaylist:
+  catalog.createPlaylist("Soul");
+  catalog.createPlaylist("Pop");
+  console.log(catalog.getAllPlaylists()); 
+  
+  catalog.removePlaylist("Soul");
+  console.log(catalog.getAllPlaylists()); // Eliminará la playlist "Soul"
 
 
 
