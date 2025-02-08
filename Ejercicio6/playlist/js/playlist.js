@@ -90,7 +90,16 @@ const musicCatalog = () => {
      * @param {string} playlistName - The name of the playlist containing the song.
      * @param {string} title - The title of the song to mark as a favorite.
      */
-    const favoriteSong = (playlistName, title) => {};
+
+    //Primero hay que encontrar la combinación de playlist y canción a marcar. Hacemos dos partes de código similares; primero par la playlist y luego para la canción, ambos con control de errores. 
+    const favoriteSong = (playlistName, title) => {
+      const targetPlaylist = playlists.find(playlist => playlist.name === playlistName);
+      if (!targetPlaylist) throw new Error("Playlist not found");
+      const targetSong = targetPlaylist.songs.find(song => song.title === title);
+      if (!targetSong) throw new Error("Song not found");
+      //pasamos la canción a favorita:
+      targetSong.favorite = true; //comprobado que muestra "One of my favourites"
+  };
   
     /**
      * Sorts songs in a specific playlist by a given criterion (title, artist, or duration).
@@ -99,8 +108,35 @@ const musicCatalog = () => {
      * @returns {Song[]} The list of sorted songs.
      * @throws {Error} If the playlist is not found or the criterion is invalid.
      */
-    const sortSongs = (playlistName, criterion) => {};
+
+    
+    const sortSongs = (playlistName, criterion) => {
+      const targetPlaylist = playlists.find(playlist => playlist.name === playlistName);
+      if (!targetPlaylist) throw new Error("Playlist not found");
+      
+      if (!['title', 'artist', 'duration'].includes(criterion)) {
+          throw new Error("Invalid sorting criterion");
+      }
+      
+      targetPlaylist.songs = [...targetPlaylist.songs].sort((a, b) => {
+          if (criterion === 'duration') {
+              return a.duration - b.duration;
+          }
+          return a[criterion].localeCompare(b[criterion]);
+      });
+      
+      playlists = [...playlists]; // Forzar actualización del estado
+      return playlists;
+  };
+    
   
+
+
+
+
+
+
+
     return { createPlaylist, addSongToPlaylist, removeSongFromPlaylist, sortSongs, getAllPlaylists, removePlaylist, favoriteSong };
   };
 
