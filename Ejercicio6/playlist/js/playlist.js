@@ -41,8 +41,10 @@ const musicCatalog = () => {
      * Gets all playlists in the catalog.
      * @returns {Playlist[]} The list of all playlists.
      */
-    const getAllPlaylists = () => {};
+    const getAllPlaylists = () => playlists;
   
+
+
     /**
      * Removes a playlist from the catalog.
      * @param {string} playlistName - The name of the playlist to remove.
@@ -83,6 +85,14 @@ const musicCatalog = () => {
   
     return { createPlaylist, addSongToPlaylist, removeSongFromPlaylist, sortSongs, getAllPlaylists, removePlaylist, favoriteSong };
   };
+
+  //Pruebas manuales:
+  const catalog = musicCatalog();
+  console.log(catalog.getAllPlaylists()); // Devolverá la lista de playlists vacía
+  catalog.createPlaylist("Jazz");
+  console.log(catalog.getAllPlaylists()); // Devolverá la lista de playlists con la playlist "Jazz"
+
+
 
 //Paso 2: añadirmos el export default para poder mostrar el código:
   export default musicCatalog;
