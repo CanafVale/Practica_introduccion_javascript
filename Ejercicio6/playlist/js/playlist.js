@@ -54,6 +54,7 @@ const musicCatalog = () => {
     //Además, no modificams los datos iniciales, sino que creamos un nuevo array con los datos que queremos, por lo que no hay problemas de mutabilidad.
     const removePlaylist = (playlistName) => {
       playlists = playlists.filter(playlist => playlist.name !== playlistName);
+      return playlists; //Sin el return borraba todas las playlists
   };
 
 
@@ -63,7 +64,14 @@ const musicCatalog = () => {
      * @param {{ title: string, artist: string, genre: string, duration: number }} song - The song to add to the playlist.
      * @throws {Error} If the playlist is not found.
      */
-    const addSongToPlaylist = (playlistName, song) => {};
+    const addSongToPlaylist = (playlistName, song) => {
+      //Busca en el array de playlists la playlist que queremos:
+      const targetPlaylist = playlists.find(playlist => playlist.name === playlistName);
+      ///Si no encontramos la playlist, lanzamos un error:
+      if (!targetPlaylist) throw new Error("Playlist not found");
+      //Si la playlist existe, añadimos la canción a la playlist con el spread operator:
+      targetPlaylist.songs = [...targetPlaylist.songs, { ...song, favorite: false }];
+  };
   
     /**
      * Removes a song from a specific playlist.
@@ -71,7 +79,11 @@ const musicCatalog = () => {
      * @param {string} title - The title of the song to remove.
      * @throws {Error} If the playlist or song is not found.
      */
-    const removeSongFromPlaylist = (playlistName, title) => {};
+    const removeSongFromPlaylist = (playlistName, title) => {
+      const targetPlaylist = playlists.find(playlist => playlist.name === playlistName);
+      if (!targetPlaylist) throw new Error("Playlist not found");
+      targetPlaylist.songs = targetPlaylist.songs.filter(song => song.title !== title);
+  };
   
     /**
      * Marks a song as a favorite or removes the favorite status.
@@ -107,6 +119,8 @@ const musicCatalog = () => {
   catalog.removePlaylist("Soul");
   console.log(catalog.getAllPlaylists()); // Eliminará la playlist "Soul"
 
+  catalog.addSongToPlaylist("Jazz", { title: "September Song", artist: "Sarah Vaughan", genre: "Jazz", duration: 100 });
+  console.log(catalog.getAllPlaylists()); //OK, funciona.
 
 
 //Paso 2: añadirmos el export default para poder mostrar el código:
