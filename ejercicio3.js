@@ -36,8 +36,8 @@ const input3 = [
 // Función:
 // create your function here
 const generatePath = (steps) => {
-    const extension = steps.pop();
-    const path = steps.join('/');
+    const extension = steps[steps.length - 1];
+    const path = steps.slice(0, steps.length - 1).join('/');
     return `${path}.${extension}`;
 }
 
@@ -92,22 +92,22 @@ const firstinput = 10;
 const secondInput = 1;
 const thirdInput = 11234;
 
-const separadorDigitos_inicial = (numero) => {
+const separadorDigitosInicial = (numero) => {
     const digitos = numero.toString().split('');
     return digitos.join('-');
 }
 
-console.log(separadorDigitos_inicial(firstinput)); // '1-0'
-console.log(separadorDigitos_inicial(secondInput)); // '1-0'
-console.log(separadorDigitos_inicial(thirdInput)); // '1-0'
+console.log(separadorDigitosInicial(firstinput)); // '1-0'
+console.log(separadorDigitosInicial(secondInput)); // '1-0'
+console.log(separadorDigitosInicial(thirdInput)); // '1-0'
 
 
 //Refactorizado y con el test con el forEach:
 const separadorDigitos = numero => numero.toString().split('').join('-');
 
-const ejercicio_3_2_inputs = [10, 1, 11234];
+const ejercicio3Parte2Inputs = [10, 1, 11234];
 
-ejercicio_3_2_inputs.forEach(input => console.log(separadorDigitos(input)));
+ejercicio3Parte2Inputs.forEach(input => console.log(separadorDigitos(input)));
 
 
 
@@ -133,20 +133,24 @@ yourFunction(input2); // '7 retniop'
 
 // Vemos que invierte la palabra y añade el número de caracteres al principio. Lo que retorna es un string.
 
-const conteo_inverso_inicial = (string) => {
+const conteoInversoInicial = (string) => {
     const conteo = string.length;
     const stringInvertido = string.split('').reverse().join('');
     return conteo + ' ' + stringInvertido;
 }
 
-test_1 = conteo_inverso_inicial('string'); 
-console.log(test_1);
+const pruebaInverso1 = 'string';
+const pruebaInverso2 = 'variable';
+const pruebaInverso3 = 'pointer';
+
+let result = conteoInversoInicial(pruebaInverso1); 
+console.log(result);
 
 // Refactorizamos:
 
 const conteo_inverso = string => string.length + ' ' + string.split('').reverse().join('');
-const ejercicio_3_3_inputs = ['string', 'variable', 'pointer'];
+const ejercicio3Parte3Inputs = [pruebaInverso1, pruebaInverso2, pruebaInverso3];
 
-ejercicio_3_3_inputs.forEach(input => console.log(conteo_inverso(input)));
+ejercicio3Parte3Inputs.forEach(input => console.log(conteo_inverso(input)));
 
 
