@@ -13,15 +13,24 @@ En este archivo queremos mostrar por pantalla la fecha de inicio del módulo de 
 const usuario = {
     nombre: 'Ana Belén',
     apellidos: 'Fernández Martínez',
-    temas: {
-        'Node.js': '2025-03-10',//pongo entre comillas por la extensión
-        'Git': '2025-01-20', //como no hay módulo en sí, pongo el día del kick off
-        'react': '2025-05-12'
-    },
-    busquedaActiva: true
-
-};
+    temas: 
+    [
+        {
+          name: 'NodeJS',
+          date: '2025-03-10',//pongo entre comillas por la extensión
+        },
+        {
+          name: 'Git',
+          date: '2025-01-20',//como no hay módulo en sí, pongo el día del kick off
+        },
+        {
+          name: 'React',
+          date: '2025-05-12',
+        },
+      ],
+      busquedaActiva: false,
+    };
 
 //console.log(usuario);
 
-console.log(usuario.temas.react);
+console.log("Inicio React:", usuario.temas[2].date);
