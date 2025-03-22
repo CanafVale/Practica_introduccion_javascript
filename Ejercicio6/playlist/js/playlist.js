@@ -24,6 +24,17 @@ const musicCatalog = () => {
      */
     let playlists = [];
   
+    /** CORRECCIÓN: añadimos función auxiliar para búsqueda */
+
+    const findPlaylist = (playlistName) => {
+      const playlist = playlists.find((playlist) => playlist.name === playlistName);
+      if (!playlist) {
+        throw new Error("Playlist not found");
+      }
+      return playlist;
+    };
+  
+
     /**
      * Adds a new playlist to the catalog.
      * @param {string} playlistName - The name of the new playlist.
@@ -65,13 +76,18 @@ const musicCatalog = () => {
      * @throws {Error} If the playlist is not found.
      */
     const addSongToPlaylist = (playlistName, song) => {
-      //Busca en el array de playlists la playlist que queremos:
-      const targetPlaylist = playlists.find(playlist => playlist.name === playlistName);
-      ///Si no encontramos la playlist, lanzamos un error:
-      if (!targetPlaylist) throw new Error("Playlist not found");
-      //Si la playlist existe, añadimos la canción a la playlist con el spread operator:
-      targetPlaylist.songs = [...targetPlaylist.songs, { ...song, favorite: false }];
-  };
+      findPlaylist(playlistName);
+      playlists = playlists.map((playlist) => {
+        if (playlist.name === playlistName) {
+          return {
+            ...playlist,
+            songs: [...playlist.songs, { ...song, favorite: false }],
+          };
+        }
+        return playlist;
+      });
+    };
+  
   
     /**
      * Removes a song from a specific playlist.
@@ -80,10 +96,20 @@ const musicCatalog = () => {
      * @throws {Error} If the playlist or song is not found.
      */
     const removeSongFromPlaylist = (playlistName, title) => {
-      const targetPlaylist = playlists.find(playlist => playlist.name === playlistName);
-      if (!targetPlaylist) throw new Error("Playlist not found");
-      targetPlaylist.songs = targetPlaylist.songs.filter(song => song.title !== title);
-  };
+      const hasPlaylist = findPlaylist(playlistName);
+      if (!hasPlaylist.songs.find((song) => song.title === title)) {
+        throw new Error("Song not found");
+      }
+      playlists = playlists.map((playlist) => {
+        if (playlist.name === playlistName) {
+          return {
+            ...playlist,
+            songs: playlist.songs.filter((song) => song.title !== title),
+          };
+        }
+        return playlist;
+      });
+    };
   
     /**
      * Marks a song as a favorite or removes the favorite status.
@@ -92,14 +118,29 @@ const musicCatalog = () => {
      */
 
     //Primero hay que encontrar la combinación de playlist y canción a marcar. Hacemos dos partes de código similares; primero par la playlist y luego para la canción, ambos con control de errores. 
+    // Sustituimos el uso de .find, que estaba mal porque da
+    //problemas con la mutabilidad, por .map, que es más seguro.
+    
     const favoriteSong = (playlistName, title) => {
-      const targetPlaylist = playlists.find(playlist => playlist.name === playlistName);
-      if (!targetPlaylist) throw new Error("Playlist not found");
-      const targetSong = targetPlaylist.songs.find(song => song.title === title);
-      if (!targetSong) throw new Error("Song not found");
-      //pasamos la canción a favorita:
-      targetSong.favorite = true; //comprobado que muestra "One of my favourites"
-  };
+      playlists = playlists.map((playlist) => {
+        if (playlist.name === playlistName) {
+          return {
+            ...playlist,
+            songs: playlist.songs.map((song) => {
+              if (song.title === title) {
+                return {
+                  ...song,
+                  favorite: !song.favorite,
+                };
+              }
+              return song;
+            }),
+          };
+        }
+        return playlist;
+      });
+    };
+  
   
     /**
      * Sorts songs in a specific playlist by a given criterion (title, artist, or duration).
@@ -111,24 +152,26 @@ const musicCatalog = () => {
 
     
     const sortSongs = (playlistName, criterion) => {
-      const targetPlaylist = playlists.find(playlist => playlist.name === playlistName);
-      if (!targetPlaylist) throw new Error("Playlist not found");
-      
+      findPlaylist(playlistName);
       if (!['title', 'artist', 'duration'].includes(criterion)) {
-          throw new Error("Invalid sorting criterion");
+        throw new Error("Invalid sorting criterion");
       }
-      
-      targetPlaylist.songs = [...targetPlaylist.songs].sort((a, b) => {
-          if (criterion === 'duration') {
-              return a.duration - b.duration;
-          }
-          return a[criterion].localeCompare(b[criterion]);
+      playlists = playlists.map((playlist) => {
+        if (playlist.name === playlistName) {
+          return {
+            ...playlist,
+            songs: [...playlist.songs].sort((a, b) => {
+              if (criterion === 'duration') {
+                return a.duration - b.duration;
+              }
+              return a[criterion].localeCompare(b[criterion]);
+            }),
+          };
+        }
+        return playlist;
       });
-      
-      playlists = [...playlists]; // Forzar actualización del estado
-      return playlists;
-  };
-    
+    };
+  
   
 
 
