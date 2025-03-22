@@ -97,9 +97,10 @@ const separadorDigitosInicial = (numero) => {
     return digitos.join('-');
 }
 
-console.log(separadorDigitosInicial(firstinput)); // '1-0'
-console.log(separadorDigitosInicial(secondInput)); // '1-0'
-console.log(separadorDigitosInicial(thirdInput)); // '1-0'
+console.log(separadorDigitosInicial(firstinput));      // '1-0'
+console.log(separadorDigitosInicial(secondInput));     // '1'
+console.log(separadorDigitosInicial(thirdInput));      // '1-1-2-3-4'
+
 
 
 //Refactorizado y con el test con el forEach:
@@ -148,9 +149,9 @@ console.log(result);
 
 // Refactorizamos:
 
-const conteo_inverso = string => string.length + ' ' + string.split('').reverse().join('');
+const conteoInverso = string => string.length + ' ' + string.split('').reverse().join('');
 const ejercicio3Parte3Inputs = [pruebaInverso1, pruebaInverso2, pruebaInverso3];
 
-ejercicio3Parte3Inputs.forEach(input => console.log(conteo_inverso(input)));
+ejercicio3Parte3Inputs.forEach(input => console.log(conteoInverso(input)));
 
 
