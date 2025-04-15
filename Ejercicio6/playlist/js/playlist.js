@@ -1,4 +1,4 @@
-console.log("Ejercicio 6: Playlist"); //Ok, conectado.
+console.log("Ejercicio 6: Playlist"); //Ok, connected.
 /**
  * @typedef {Object} Song
  * @property {string} title - The title of the song.
@@ -24,7 +24,7 @@ const musicCatalog = () => {
      */
     let playlists = [];
   
-    /** CORRECCIÓN: añadimos función auxiliar para búsqueda */
+    /** CORRECTION: add aux function to search  */
 
     const findPlaylist = (playlistName) => {
       const playlist = playlists.find((playlist) => playlist.name === playlistName);
@@ -39,8 +39,8 @@ const musicCatalog = () => {
      * Adds a new playlist to the catalog.
      * @param {string} playlistName - The name of the new playlist.
      */
-    //Creamos la función con el spread operator como en el ejemplo de cart y para evitar los problemas de mutabilidad que nos daría si lo hicieramos con .push.
-    //Añadimos una condición para que si no se introduce un nombre de playlist nos devuelva un error, como especie de control de errores:
+    //Create the function with spread operator as in the "cart" example and to avoid mutability issues we'd have with  .push.
+    //Add a condition so that if a playlist name is not introduced, we get an error :
     const createPlaylist = (playlistName) => {
       if (!playlistName) throw new Error("Playlist name is required");
       playlists = [...playlists, { name: playlistName, songs: [] }];
@@ -61,11 +61,11 @@ const musicCatalog = () => {
      * @param {string} playlistName - The name of the playlist to remove.
      */
 
-    //Filter va a crear un nuevo array con todas las playlists excepto la que tiene el playlistName indicado.
-    //Además, no modificams los datos iniciales, sino que creamos un nuevo array con los datos que queremos, por lo que no hay problemas de mutabilidad.
+    
+
     const removePlaylist = (playlistName) => {
       playlists = playlists.filter(playlist => playlist.name !== playlistName);
-      return playlists; //Sin el return borraba todas las playlists
+      return playlists; 
   };
 
 
@@ -76,17 +76,15 @@ const musicCatalog = () => {
      * @throws {Error} If the playlist is not found.
      */
     const addSongToPlaylist = (playlistName, song) => {
-      findPlaylist(playlistName);
-      playlists = playlists.map((playlist) => {
-        if (playlist.name === playlistName) {
-          return {
-            ...playlist,
-            songs: [...playlist.songs, { ...song, favorite: false }],
-          };
-        }
-        return playlist;
-      });
+      const playlist = findPlaylist(playlistName); 
+    
+      playlists = playlists.map(p =>
+        p.name === playlistName
+          ? { ...p, songs: [...playlist.songs, { ...song, favorite: false }] }
+          : p
+      );
     };
+    
   
   
     /**
@@ -117,10 +115,7 @@ const musicCatalog = () => {
      * @param {string} title - The title of the song to mark as a favorite.
      */
 
-    //Primero hay que encontrar la combinación de playlist y canción a marcar. Hacemos dos partes de código similares; primero par la playlist y luego para la canción, ambos con control de errores. 
-    // Sustituimos el uso de .find, que estaba mal porque da
-    //problemas con la mutabilidad, por .map, que es más seguro.
-    
+        
     const favoriteSong = (playlistName, title) => {
       playlists = playlists.map((playlist) => {
         if (playlist.name === playlistName) {
@@ -152,55 +147,48 @@ const musicCatalog = () => {
 
     
     const sortSongs = (playlistName, criterion) => {
-      findPlaylist(playlistName);
+      const playlist = findPlaylist(playlistName); 
+    
       if (!['title', 'artist', 'duration'].includes(criterion)) {
         throw new Error("Invalid sorting criterion");
       }
-      playlists = playlists.map((playlist) => {
-        if (playlist.name === playlistName) {
-          return {
-            ...playlist,
-            songs: [...playlist.songs].sort((a, b) => {
-              if (criterion === 'duration') {
-                return a.duration - b.duration;
-              }
-              return a[criterion].localeCompare(b[criterion]);
-            }),
-          };
-        }
-        return playlist;
-      });
+    
+      playlists = playlists.map(p =>
+        p.name === playlistName
+          ? {
+              ...p,
+              songs: [...playlist.songs].sort((a, b) => {
+                return criterion === 'duration'
+                  ? a.duration - b.duration
+                  : a[criterion].localeCompare(b[criterion]);
+              }),
+            }
+          : p
+      );
     };
   
-  
-
-
-
-
-
-
-
+   
     return { createPlaylist, addSongToPlaylist, removeSongFromPlaylist, sortSongs, getAllPlaylists, removePlaylist, favoriteSong };
   };
 
-  //Pruebas manuales:
- // Función createPlaylist:
+  //Manual test:
+ //  createPlaylist:
   const catalog = musicCatalog();
-  console.log(catalog.getAllPlaylists()); // Devolverá la lista de playlists vacía
+  console.log(catalog.getAllPlaylists()); // Will return an empty array []
   catalog.createPlaylist("Jazz");
-  console.log(catalog.getAllPlaylists()); // Devolverá la lista de playlists con la playlist "Jazz"
+  console.log(catalog.getAllPlaylists()); // Will return [{ name: "Jazz", songs: [] }]
 
-  // Función removePlaylist:
+  //  removePlaylist:
   catalog.createPlaylist("Soul");
   catalog.createPlaylist("Pop");
   console.log(catalog.getAllPlaylists()); 
   
   catalog.removePlaylist("Soul");
-  console.log(catalog.getAllPlaylists()); // Eliminará la playlist "Soul"
+  console.log(catalog.getAllPlaylists()); // Will return [{ name: "Jazz", songs: [] }, { name: "Pop", songs: [] }]
 
   catalog.addSongToPlaylist("Jazz", { title: "September Song", artist: "Sarah Vaughan", genre: "Jazz", duration: 100 });
-  console.log(catalog.getAllPlaylists()); //OK, funciona.
+  console.log(catalog.getAllPlaylists()); // Will return [{ name: "Jazz", songs: [{ title: "September Song", artist: "Sarah Vaughan", genre: "Jazz", duration: 100, favorite: false }] }, { name: "Pop", songs: [] }]
 
 
-//Paso 2: añadirmos el export default para poder mostrar el código:
+
   export default musicCatalog;
